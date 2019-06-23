@@ -1,29 +1,20 @@
-class Options():
-    """Stores All Settings"""
+import os
+import sys
 
-    def __init__(self):
-        # Screen Settings
-        self.x_res = 640
-        self.y_res = 480
-        self.scr_bg = (0,0,0)
-        self.white = (255,255,255)
-        self.fps = 180
+"""1. Checks if .pong directory is present or not, then copies default config"""
+"""2. If default config is present, reads from file to create settings"""
 
-        # Line Settings
-        self.line = 10
-        self.ctr_segment = 12
+class Configs:
+    """Checks for .pong directory"""
 
-        # Key Settings
-        self.exit_key = pygame.K_ESCAPE
+    def __init__(self, pong_dir):
+        self.confile = ".pong.conf"
+        self.home_dir = os.path.expanduser("~")
 
-        # Ball Settings
-        self.b_size = int(self.line*2)
-        self.b_speed = 2
+        if os.path.isfile(os.path.join(self.home_dir, self.confile)):
+            print("Configs: Reading from pong.")
+        else:
+            print("NO DIR")
 
-        # Paddle Settings
-        self.p_width = self.line * 2
-        self.p_length = int(self.y_res / 12)
-
-        # AI settings
-        self.wait = 1
-        self.difficulty = self.b_speed / 2
+if __name__ == "__main__":
+    test = Configs(".pong")
