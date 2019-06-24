@@ -1,20 +1,26 @@
 import os
 import sys
+import configparser
 
-"""1. Checks if .pong directory is present or not, then copies default config"""
-"""2. If default config is present, reads from file to create settings"""
+class Configuration:
+    """
+    Checks if a config file is present or not. If present, uses configparser module to load the file.
+    """
 
-class Configs:
-    """Checks for .pong directory"""
+    def __init__(self, conf_file):
+        self.conparser = configparser.ConfigParser()
+        self.confile = os.path.join(os.path.expanduser("~"), conf_file)
 
-    def __init__(self, pong_dir):
-        self.confile = ".pong.conf"
-        self.home_dir = os.path.expanduser("~")
-
-        if os.path.isfile(os.path.join(self.home_dir, self.confile)):
-            print("Configs: Reading from pong.")
+        if os.path.isfile(self.confile):
+            print("Configs: Reading from", self.confile)    # Debug Line
+            self.conparser.read(self.confile)
+            self.width = int(self.conparser['SCREEN']['Width'])
+            self.height = int(self.conparser['SCREEN']['Height'])
+            self.fps = int(self.conparser['SCREEN']['Frames'])
         else:
-            print("NO DIR")
+            print("Configs:", self.confile, "not found! Using Defaults")   # Debug Line
+
+# Debug
 
 if __name__ == "__main__":
-    test = Configs(".pong")
+    test = Configuration(".pong.conf")
