@@ -19,8 +19,11 @@ class Configuration:
             self.fps = int(self.conparser['SCREEN']['Frames'])
         else:
             print("Configs:", self.confile, "not found! Using Defaults")   # Debug Line
+            self.width = 640
+            self.height = 480
+            self.fps = 180
 
 # Debug
 
 if __name__ == "__main__":
-    test = Configuration(".pong.conf")
+    print(Configuration(".pong.conf").width)

@@ -57,7 +57,7 @@ class Settings():
 
         # AI settings
         self.wait = 1
-        self.difficulty = self.b_speed / 2
+        self.difficulty = 0.1
 
 class GameFunctions():
     """A Class to store game functions"""
@@ -100,9 +100,9 @@ class GameFunctions():
         # Track ball when ball moves towards paddle
         elif self.ball.balldir_x == 1:
             if self.p2.centery < self.ball.ball.centery:
-                self.p2.y += self.sett.difficulty
+                self.p2.y += 2
             else:
-                self.p2.y -= self.sett.difficulty
+                self.p2.y -= 2
 
     def reset(self):
         if self.ball.out_left == True or self.ball.out_right == True:
