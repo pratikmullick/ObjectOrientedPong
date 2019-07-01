@@ -1,9 +1,6 @@
 import pygame
 import pygame.freetype
 
-# Debug Only
-import sys
-from options import Configuration
 from screen import Display
 
 class OpeningScreen(Display):
@@ -81,13 +78,5 @@ class OpeningScreen(Display):
         Render Cursor for package selection.
         """
 
-        board = pygame.Rect(self.starting - (self.w // 10), self.gap * 7, self.text_height * 2, self.text_height)
-        cursor = [board.midtop, board.midright, board.midleft, board.midright, board.midbottom]
-        pygame.draw.lines(self.surface, self.font_color, False, cursor, self.w // 250)
-
-
-if __name__ == "__main__":
-    confy = Configuration(".pong.conf")
-    OpeningScreen(confy)
-
-
+        self.cursr = pygame.Rect(self.starting - (self.w // 10), self.gap * 7, self.text_height * 2, self.text_height)
+        pygame.draw.rect(self.surface, self.font_color, self.cursr)
