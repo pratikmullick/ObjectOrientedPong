@@ -3,6 +3,7 @@ Defines all objects for the game.
 """
 import pygame
 import pygame.freetype
+import functions
 
 class Logo:
     """
@@ -39,7 +40,6 @@ class Selection:
 
     def __init__(self, settings):
         pygame.freetype.init()
-
         self.settings = settings
         self.font = pygame.freetype.Font("assets/saxmono.ttf", size=self.settings.height // 25)
 
@@ -49,20 +49,13 @@ class Selection:
         self.text_width = self.font.get_rect(self.text[0]).width
         self.text_height = self.font.get_rect(self.text[0]).height
         self.starting = (self.settings.width // 2) - (self.text_width // 2)
-
+        
         cursor_size = self.text_height
+        self.cursor = pygame.Rect(self.starting - (self.settings.width // 10),
+                self.position, cursor_size, cursor_size)
 
-        self.cursor = pygame.Rect(self.starting - (self.settings.width // 10), self.position,
-            cursor_size, cursor_size)
+if __name__ == "__main__":
+    from options import Configuration
+    confy = Configuration(".pong.conf")
+    Selection(confy)
 
-
-"""
-    def cursor(self):
-
-        self.cursr = pygame.Rect(self.starting - (self.w // 10), self.gap * 7, self.text_height * 2, self.text_height)
-        pygame.draw.rect(self.surface, self.font_color, self.cursr)
-        # Font Settings
-        self.font = pygame.freetype.Font("assets/saxmono.ttf", size = self.h // 25)
-        self.font_color = (255, 255, 255)
-        self.message = ["ONE PLAYER", "TWO PLAYER"]   
-"""

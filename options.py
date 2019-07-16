@@ -28,7 +28,7 @@ class Configuration:
             self.fps = 180
         
         # Static Options
-        self.line = self.width // 25
+        self.line = self.width // 50
         self.black = (0, 0, 0)
         self.white = (255, 255, 255)
         self.silver = (192, 192, 192)
