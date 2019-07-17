@@ -17,21 +17,24 @@ class Opening:
 
     def check_event(self):
         for event in pygame.event.get():
-            key = pygame.key.get_pressed()
+
             # For exiting out of the game.
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
             # For moving the cursor.
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
                     self.down = event.key
-                    print(self.down)
+                    print(self.down)    # Debug
                     self.state = 2
                 if event.key == pygame.K_UP:
                     self.up = event.key
-                    print(self.up)
+                    print(self.up)      # Debug
                     self.state = 1
+
+            # For selecting
                 if event.key == self.settings.select_key:
                     self.start = True
 
@@ -51,14 +54,3 @@ class Game:
                 if event.key == pygame.K_RIGHT:
                     print("Right")
 """
-
-if __name__ == "__main__":
-    while True:
-        pygame.init()
-        pygame.display.set_mode((640, 480))
-        Opening().check_event()
-        if Opening().check_event() != 0:
-            print(Opening().up, Opening().down)
-        pygame.display.update()
-        
-        

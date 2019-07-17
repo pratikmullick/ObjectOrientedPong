@@ -53,9 +53,3 @@ class Selection:
         cursor_size = self.text_height
         self.cursor = pygame.Rect(self.starting - (self.settings.width // 10),
                 self.position, cursor_size, cursor_size)
-
-if __name__ == "__main__":
-    from options import Configuration
-    confy = Configuration(".pong.conf")
-    Selection(confy)
-

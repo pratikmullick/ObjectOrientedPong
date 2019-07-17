@@ -5,7 +5,6 @@ Defines static and dynamic settings for the other classes to use.
 import os
 import sys
 import configparser
-import pygame
 import json
 
 class Configuration:
@@ -29,20 +28,16 @@ class Configuration:
             
             # Keys
             self.select_key = int(self.keymaps[self.conparser['KEY']['SELECT']])
+
         else:
             # print("Configs:", self.confile, "not found! Using Defaults")   # Debug Line
             self.width = 640
             self.height = 480
             self.fps = 180
+            self.select_key = int(self.keymaps['RETURN'])
         
         # Static Options
         self.line = self.width // 50
         self.black = (0, 0, 0)
         self.white = (255, 255, 255)
         self.silver = (192, 192, 192)
-
-
-# Debug
-if __name__ == "__main__":
-    print(Configuration(".pong.conf").select_key)
-

@@ -4,38 +4,60 @@ import pygame
 import time
 import functions
 
-confy = Configuration(".pong.conf")
+class OpeningScreen:
+    """
+    Draws Opening Screen on to the desktop window.
+    """
+    
+    def __init__(self, confile=".pong.conf"):
+        self.confy = Configuration(confile)
+        self.opening = functions.Opening(self.confy)
+        self.select = objects.Selection(self.confy)
+        self.cursor = self.select.cursor
 
-pygame.init()
+        # Init game screen
+        pygame.init()
+        self.surface = pygame.display.set_mode((self.confy.width, self.confy.height))
 
-surface = pygame.display.set_mode((confy.width, confy.height))
+        # Run Loop
+        self.loop()
 
-
-select = objects.Selection(confy)
-cursor = select.cursor
-opening = functions.Opening(confy)
-while True:
-    text_init = select.position
-    fps_clock = pygame.time.Clock()
-    surface.fill(confy.black)
-    for letter in objects.Logo(confy).logo:
-        pygame.draw.lines(surface, confy.silver, False, letter, confy.line)
-    for msg in select.text:
-        select.font.render_to(surface, (select.starting,text_init), msg, fgcolor=confy.white)
-        text_init += select.gap
+    def draw_objects(self):
+        text_init = self.select.position
+        self.surface.fill(self.confy.black)
         
-    opening.check_event()
-    if opening.state == 2:
-        cursor.top = select.position + select.gap
-    elif opening.state == 1:
-        cursor.top = select.position
-        
-    if opening.state == 1 and opening.start == True:
-        print("One Player Game")
-        break
-    elif opening.state == 2 and opening.start == True:
-        print("Two Player Game")
-        break
-    pygame.draw.rect(surface, confy.white, cursor)
-    pygame.display.update()
-    fps_clock.tick(confy.fps)
+        # Draw Logo
+        for letter in objects.Logo(self.confy).logo:
+            pygame.draw.lines(self.surface, self.confy.silver, False, letter, self.confy.line)
+
+        # Draw Selection Text
+        for msg in self.select.text:
+            self.select.font.render_to(self.surface, (self.select.starting,text_init), msg, fgcolor=self.confy.white)
+            text_init += self.select.gap
+
+        pygame.draw.rect(self.surface, self.confy.white, self.cursor)
+
+    def check_cursor_state(self):
+        self.opening.check_event()
+        if self.opening.state == 2:
+            self.cursor.top = self.select.position + self.select.gap
+        elif self.opening.state == 1:
+            self.cursor.top = self.select.position
+        if self.opening.state == 1 and self.opening.start == True:
+            return self.opening.state
+        elif self.opening.state == 2 and self.opening.start == True:
+            return self.opening.state
+
+    def loop(self):
+        while True:
+            fps_clock = pygame.time.Clock()
+            self.check_cursor_state()
+            if self.opening.start == True:
+                break
+            self.draw_objects()
+            pygame.display.update()
+            fps_clock.tick(self.confy.fps)
+
+if __name__ == "__main__":
+    game_type = OpeningScreen().check_cursor_state()
+    print(game_type)
