@@ -3,7 +3,6 @@ Defines all objects for the game.
 """
 import pygame
 import pygame.freetype
-import functions
 
 class Logo:
     """
@@ -53,3 +52,27 @@ class Selection:
         cursor_size = self.text_height
         self.cursor = pygame.Rect(self.starting - (self.settings.width // 10),
                 self.position, cursor_size, cursor_size)
+        
+class Borders:
+    """
+    Defines Game Borders, and a dashed center line.
+    """
+    
+    def __init__(self, settings):
+        self.settings = settings
+        self.top_border = pygame.Rect((0, 0), (self.settings.width, self.settings.line))
+        self.bottom_border = pygame.Rect((0, (self.settings.height - self.settings.line)), (self.settings.width, self.settings.line))
+        
+        # Dashed line in the center
+        center = self.settings.width // 2
+        line = self.settings.line
+        height = (self.settings.height) - (line * 2)
+        segments = 8
+        segment_size = height // segments
+        self.dashes = [pygame.Rect(center - (line // 2), i, line, segment_size - (segment_size // 5)) \
+                        for i in range(line + (segment_size // 10), height, height // segments)]
+
+if __name__ == "__main__":
+    from options import Configuration
+    confy = Configuration()
+    print(Borders(confy).height)

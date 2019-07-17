@@ -3,7 +3,6 @@ Defines static and dynamic settings for the other classes to use.
 """
 
 import os
-import sys
 import configparser
 import json
 
@@ -17,7 +16,6 @@ class Configuration:
         self.confile = os.path.join(os.path.expanduser("~"), conf_file)
         keymap_file = open('assets/keymaps.json', 'r')
         self.keymaps = json.loads(keymap_file.read())
-        
 
         if os.path.isfile(self.confile):
             # print("Configs: Reading from", self.confile)    # Debug Line
@@ -25,7 +23,7 @@ class Configuration:
             self.width = int(self.conparser['SCREEN']['Width'])
             self.height = int(self.conparser['SCREEN']['Height'])
             self.fps = int(self.conparser['SCREEN']['Frames'])
-            
+
             # Keys
             self.select_key = int(self.keymaps[self.conparser['KEY']['SELECT']])
 
@@ -35,7 +33,7 @@ class Configuration:
             self.height = 480
             self.fps = 180
             self.select_key = int(self.keymaps['RETURN'])
-        
+
         # Static Options
         self.line = self.width // 50
         self.black = (0, 0, 0)

@@ -2,6 +2,7 @@
 
 # Ignore '__pycache__' directory
 __pycache__/
+pylintrc
 
 # Ignore VSCode directory
 .vscode/

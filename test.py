@@ -58,6 +58,34 @@ class OpeningScreen:
             pygame.display.update()
             fps_clock.tick(self.confy.fps)
 
+class GameScreen:
+    """
+    Draws the GameScreen on the Window.
+    """
+    
+    def __init__(self, confile=".pong.conf"):
+        self.confy = Configuration(confile)
+        self.borders = objects.Borders(self.confy)
+
+        # Init game screen
+        pygame.init()
+        self.surface = pygame.display.set_mode((self.confy.width, self.confy.height))
+        
+        self.draw_objects()
+        pygame.display.update()
+        
+    def draw_objects(self):
+        self.surface.fill(self.confy.black)
+        
+        # Draw Top and Bottom Borders
+        pygame.draw.rect(self.surface, (255, 0, 0), self.borders.top_border)
+        pygame.draw.rect(self.surface, (255, 0, 0), self.borders.bottom_border)
+        # pygame.draw.rect(self.surface, (0, 0, 255), self.borders.dash)
+        
+        for i in self.borders.dashes:
+            pygame.draw.rect(self.surface, self.confy.white, i)
+
 if __name__ == "__main__":
-    game_type = OpeningScreen().check_cursor_state()
-    print(game_type)
+    OpeningScreen().check_cursor_state()
+    GameScreen()
+    time.sleep(10)
