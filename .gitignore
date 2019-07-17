@@ -26,7 +26,3 @@ Scripts/
 
 # Ignore test.py
 # test.py
-
-# Ignore all JSON and data files
-*.json
-*.csv

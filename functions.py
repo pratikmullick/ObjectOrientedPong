@@ -6,13 +6,18 @@ class Opening:
     Functions for moving the cursor on the opening screen.
     """
     
-    def __init__(self):
+    def __init__(self, settings):
         pygame.init()
+        self.settings = settings
+
         self.state = 1
         self.start = False
+        self.down = 0
+        self.up = 0
 
     def check_event(self):
         for event in pygame.event.get():
+            key = pygame.key.get_pressed()
             # For exiting out of the game.
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -20,18 +25,18 @@ class Opening:
             # For moving the cursor.
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
-                    print("Down")
+                    self.down = event.key
+                    print(self.down)
                     self.state = 2
                 if event.key == pygame.K_UP:
-                    print("UP")
+                    self.up = event.key
+                    print(self.up)
                     self.state = 1
-                if event.key == pygame.K_RETURN:
+                if event.key == self.settings.select_key:
                     self.start = True
+
 """
 class Game:
-    """
-    Functions for moving the paddle in the game.
-    """
     def __init__(self):
         pygame.init()
     
@@ -46,3 +51,14 @@ class Game:
                 if event.key == pygame.K_RIGHT:
                     print("Right")
 """
+
+if __name__ == "__main__":
+    while True:
+        pygame.init()
+        pygame.display.set_mode((640, 480))
+        Opening().check_event()
+        if Opening().check_event() != 0:
+            print(Opening().up, Opening().down)
+        pygame.display.update()
+        
+        

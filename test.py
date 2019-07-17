@@ -13,7 +13,7 @@ surface = pygame.display.set_mode((confy.width, confy.height))
 
 select = objects.Selection(confy)
 cursor = select.cursor
-opening = functions.Opening()
+opening = functions.Opening(confy)
 while True:
     text_init = select.position
     fps_clock = pygame.time.Clock()
