@@ -85,7 +85,7 @@ class Ball:
         self.square_y = self.settings.height // 2 - self.settings.line
         self.size = int(self.settings.line * 1.5)
 
-        self.speed = 1
+        self.speed = 2
         
         self.out_left = False
         self.out_right = False

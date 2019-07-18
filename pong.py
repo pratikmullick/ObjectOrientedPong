@@ -76,10 +76,11 @@ class GameScreen:
         
         # Init game screen
         pygame.init()
+        pygame.display.set_caption("Object Oriented Pong")
         self.surface = pygame.display.set_mode((self.confy.width, self.confy.height))
 
     def draw_objects(self):
-        self.surface.fill(self.confy.black)
+        self.surface.fill(self.confy.navy)
         
         # Draw Top and Bottom Borders
         pygame.draw.rect(self.surface, self.confy.silver, self.borders.top_border)
@@ -89,7 +90,7 @@ class GameScreen:
             pygame.draw.rect(self.surface, self.confy.silver, dash)
 
         # Draw Ball
-        pygame.draw.rect(self.surface, self.confy.white, self.ball.square)
+        pygame.draw.rect(self.surface, self.confy.red, self.ball.square)
         
         # Draw Paddles
         pygame.draw.rect(self.surface, self.confy.white, self.paddle_1.hitter)
@@ -111,10 +112,12 @@ class GameScreen:
             self.game_functions.collision()
             self.draw_objects()
             pygame.display.update()
-            pygame.time.Clock().tick(self.confy.fps * 10)
+            pygame.time.Clock().tick(300)
 
-if __name__ == "__main__":
+def main():
     ball = objects.Ball(Configuration())
     selection = OpeningScreen().check_cursor_state()
-    GameScreen(ball, selection).gameloop()
-    
+    GameScreen(ball, selection).gameloop()   
+
+if __name__ == "__main__":
+    main()
