@@ -63,29 +63,57 @@ class GameScreen:
     Draws the GameScreen on the Window.
     """
     
-    def __init__(self, confile=".pong.conf"):
+    def __init__(self, ball, player, confile=".pong.conf"):
         self.confy = Configuration(confile)
+        self.ball = ball
+        self.player = player
         self.borders = objects.Borders(self.confy)
-
+        self.paddle_1 = objects.Paddle(self.confy, 1)
+        self.paddle_2 = objects.Paddle(self.confy, 2)
+        self.game_functions = functions.Game(self.confy, self.paddle_1, self.paddle_2, self.ball, self.player)
+        
         # Init game screen
         pygame.init()
         self.surface = pygame.display.set_mode((self.confy.width, self.confy.height))
-        
-        self.draw_objects()
-        pygame.display.update()
-        
+
     def draw_objects(self):
         self.surface.fill(self.confy.black)
         
         # Draw Top and Bottom Borders
-        pygame.draw.rect(self.surface, (255, 0, 0), self.borders.top_border)
-        pygame.draw.rect(self.surface, (255, 0, 0), self.borders.bottom_border)
-        # pygame.draw.rect(self.surface, (0, 0, 255), self.borders.dash)
+        pygame.draw.rect(self.surface, self.confy.silver, self.borders.top_border)
+        pygame.draw.rect(self.surface, self.confy.silver, self.borders.bottom_border)
         
-        for i in self.borders.dashes:
-            pygame.draw.rect(self.surface, self.confy.white, i)
+        for dash in self.borders.dashes:
+            pygame.draw.rect(self.surface, self.confy.silver, dash)
+
+        # Draw Ball
+        pygame.draw.rect(self.surface, self.confy.white, self.ball.square)
+        
+        # Draw Paddles
+        pygame.draw.rect(self.surface, self.confy.white, self.paddle_1.hitter)
+        pygame.draw.rect(self.surface, self.confy.white, self.paddle_2.hitter)
+        
+    def ball_functions(self):
+        self.ball.movement()
+        self.ball.edge_check()
+        self.ball.outside()
+        self.ball.reset()
+        
+    # Game Loop for One-Player
+    def gameloop(self):
+        while True:
+            self.game_functions.check_event()
+            self.ball_functions()
+            self.game_functions.artificial_intelligence()
+            self.game_functions.paddle_movement()
+            self.game_functions.collision()
+            self.draw_objects()
+            pygame.display.update()
+            pygame.time.Clock().tick(360)
+
 
 if __name__ == "__main__":
-    OpeningScreen().check_cursor_state()
-    GameScreen()
-    time.sleep(10)
+    ball = objects.Ball(Configuration())
+    selection = OpeningScreen().check_cursor_state()
+    GameScreen(ball, selection).gameloop()
+    

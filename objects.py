@@ -3,6 +3,8 @@ Defines all objects for the game.
 """
 import pygame
 import pygame.freetype
+import time
+import random
 
 class Logo:
     """
@@ -67,12 +69,85 @@ class Borders:
         center = self.settings.width // 2
         line = self.settings.line
         height = (self.settings.height) - (line * 2)
-        segments = 8
+        segments = 6
         segment_size = height // segments
         self.dashes = [pygame.Rect(center - (line // 2), i, line, segment_size - (segment_size // 5)) \
                         for i in range(line + (segment_size // 10), height, height // segments)]
 
-if __name__ == "__main__":
-    from options import Configuration
-    confy = Configuration()
-    print(Borders(confy).height)
+class Ball:
+    """
+    Defines the ball. Individual functions have to be called independently inside the game loop.
+    """
+
+    def __init__(self, settings):
+        self.settings = settings
+        self.square_x = self.settings.width // 2 - self.settings.line
+        self.square_y = self.settings.height // 2 - self.settings.line
+        self.size = int(self.settings.line * 1.5)
+
+        self.speed = 1
+        
+        self.out_left = False
+        self.out_right = False
+
+        self.dir_x = -1
+        self.dir_y = -1
+
+        self.square = pygame.Rect(self.square_x, self.square_y, self.size, self.size)
+        
+    def movement(self):
+        self.square.x += self.dir_x * self.speed
+        self.square.y += self.dir_y * self.speed
+
+        return self.square
+
+    def edge_check(self):
+        if self.square.top == self.settings.line:
+            self.dir_y = -self.dir_y
+        elif self.square.bottom == self.settings.height - self.settings.line:
+            self.dir_y = -self.dir_y
+
+        return self.dir_x, self.dir_y
+
+    def outside(self):
+        if self.square.right < 0:
+            self.out_left = True
+        elif self.square.left > self.settings.width:
+            self.out_right = True
+            
+        return self.out_left, self.out_right
+
+    def reset(self):
+        if self.out_left or self.out_right:
+            time.sleep(1)
+            self.square.centerx = self.square_x
+            self.square.centery = self.square_y
+            self.dir_x = random.choice([-1, 1])
+            self.dir_y = random.choice([-1, 1])
+            self.out_left = self.out_right = False
+
+class Paddle:
+    """
+    Defines the paddles.
+    """
+    
+    def __init__(self, settings, player):
+        self.settings = settings
+        self.player = player
+        
+        self.height = self.settings.height // 10
+        self.width = self.settings.line
+        self.paddle_init = (self.settings.height // 2) - (self.height // 2)
+
+        if self.player == 1:
+            p1_x = self.settings.line * 2
+            self.hitter = pygame.Rect(p1_x, self.paddle_init, self.width, self.height)
+        else:
+            p2_x = self.settings.width - (self.settings.line * 2) - self.width
+            self.hitter = pygame.Rect(p2_x, self.paddle_init, self.width, self.height)
+
+    def limits(self):
+        if self.hitter.top <= self.settings.line:
+            self.hitter.top = self.settings.line
+        elif self.hitter.bottom >= self.settings.height - self.settings.line:
+            self.hitter.bottom = self.settings.height - self.settings.line

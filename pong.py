@@ -94,9 +94,9 @@ class GameFunctions():
         # Center paddle when ball moves away
         if self.ball.balldir_x == -1:
             if self.p2.centery < self.sett.y_res / 2:
-                self.p2.y += self.sett.difficulty
+                self.p2.y += 2
             elif self.p2.centery > self.sett.y_res / 2:
-                self.p2.y -= self.sett.difficulty
+                self.p2.y -= 2
         # Track ball when ball moves towards paddle
         elif self.ball.balldir_x == 1:
             if self.p2.centery < self.ball.ball.centery:
