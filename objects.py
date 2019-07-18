@@ -135,7 +135,7 @@ class Paddle:
         self.settings = settings
         self.player = player
         
-        self.height = self.settings.height // 10
+        self.height = self.settings.height // 5
         self.width = self.settings.line
         self.paddle_init = (self.settings.height // 2) - (self.height // 2)
 
