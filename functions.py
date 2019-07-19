@@ -28,11 +28,9 @@ class Opening:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
                     self.down = event.key
-                    print(self.down)    # Debug
                     self.state = 2
                 if event.key == pygame.K_UP:
                     self.up = event.key
-                    print(self.up)      # Debug
                     self.state = 1
 
             # For selecting
@@ -51,7 +49,7 @@ class Game:
         self.ball = ball
         self.player = player
         
-        self.speed = 2
+        self.speed = 5
         self.p1_up = False
         self.p1_down = False
         self.p2_up = False
@@ -95,18 +93,18 @@ class Game:
     def paddle_movement(self):
         if self.player == 1:
             if self.p1_up:
-                self.paddle_1.hitter.centery -= 2
+                self.paddle_1.hitter.centery -= self.speed
             elif self.p1_down:
-                self.paddle_1.hitter.centery += 2
+                self.paddle_1.hitter.centery += self.speed
         if self.player == 2:
             if self.p1_up:
-                self.paddle_1.hitter.centery -= 2
+                self.paddle_1.hitter.centery -= self.speed
             elif self.p1_down:
-                self.paddle_1.hitter.centery += 2
+                self.paddle_1.hitter.centery += self.speed
             if self.p2_up:
-                self.paddle_2.hitter.centery -= 2
+                self.paddle_2.hitter.centery -= self.speed
             elif self.p2_down:
-                self.paddle_2.hitter.centery += 2
+                self.paddle_2.hitter.centery += self.speed
         self.paddle_1.limits()
         self.paddle_2.limits()
 
@@ -122,4 +120,5 @@ class Game:
         """
         if self.player == 1:
             self.paddle_2.hitter.centery = self.ball.square.centery
-                
+
+    

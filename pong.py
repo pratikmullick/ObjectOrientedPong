@@ -65,14 +65,16 @@ class GameScreen:
     Draws the GameScreen on the Window.
     """
     
-    def __init__(self, ball, player, confile=".pong.conf"):
+    def __init__(self, player, confile=".pong.conf"):
         self.confy = Configuration(confile)
-        self.ball = ball
+        self.ball = objects.Ball(self.confy)
         self.player = player
         self.borders = objects.Borders(self.confy)
         self.paddle_1 = objects.Paddle(self.confy, 1)
         self.paddle_2 = objects.Paddle(self.confy, 2)
         self.game_functions = functions.Game(self.confy, self.paddle_1, self.paddle_2, self.ball, self.player)
+        self.score_1 = objects.Score(self.confy, self.ball, True)
+        self.score_2 = objects.Score(self.confy, self.ball, False)
         
         # Init game screen
         pygame.init()
@@ -91,33 +93,56 @@ class GameScreen:
 
         # Draw Ball
         pygame.draw.rect(self.surface, self.confy.red, self.ball.square)
-        
+
         # Draw Paddles
         pygame.draw.rect(self.surface, self.confy.white, self.paddle_1.hitter)
         pygame.draw.rect(self.surface, self.confy.white, self.paddle_2.hitter)
-        
+
     def ball_functions(self):
         self.ball.movement()
         self.ball.edge_check()
         self.ball.outside()
+        p1 = self.score_1.score()[0]
+        p2 = self.score_2.score()[1]
         self.ball.reset()
-        
+
+        return p1, p2
+
+    def scorecard_display(self):
+        val_1, val_2 = self.ball_functions()
+        for i in range(2):
+            num = self.score_1.num_left
+            if i == 1:
+                pygame.draw.lines(self.surface, self.confy.white, False, num[i][val_1 % 10], self.confy.line // 2)
+            elif i == 0:
+                pygame.draw.lines(self.surface, self.confy.white, False, num[i][val_1 // 10], self.confy.line // 2)
+
+        for i in range(2):
+            num = self.score_2.num_right
+            if i == 1:
+                pygame.draw.lines(self.surface, self.confy.white, False, num[i][val_2 % 10], self.confy.line // 2)
+            elif i == 0:
+                pygame.draw.lines(self.surface, self.confy.white, False, num[i][val_2 // 10], self.confy.line // 2)
+            
     # Game Loop for One-Player
-    def gameloop(self):
-        while True:
+    def gameloop(self, active=True):
+        while active:
             self.game_functions.check_event()
-            self.ball_functions()
+            self.scorecard_display()
+            p1, p2 = self.ball_functions()
+            if p1 + 1 > self.confy.max_score or p2 + 1> self.confy.max_score:
+                active = False
             self.game_functions.artificial_intelligence()
             self.game_functions.paddle_movement()
             self.game_functions.collision()
             self.draw_objects()
+            self.scorecard_display()
             pygame.display.update()
-            pygame.time.Clock().tick(300)
+            pygame.time.Clock().tick(self.confy.fps * 2)
 
 def main():
-    ball = objects.Ball(Configuration())
     selection = OpeningScreen().check_cursor_state()
-    GameScreen(ball, selection).gameloop()   
+    GameScreen(selection).gameloop()
 
 if __name__ == "__main__":
     main()

@@ -151,3 +151,81 @@ class Paddle:
             self.hitter.top = self.settings.line
         elif self.hitter.bottom >= self.settings.height - self.settings.line:
             self.hitter.bottom = self.settings.height - self.settings.line
+
+class Score:
+    """
+    Defines the scoreboards.
+    """
+
+    def __init__(self, settings, ball, position):
+        self.settings = settings
+        self.ball = ball
+        self.position = position
+
+        self.score_p1 = 0
+        self.score_p2 = 0
+
+        self.board_top = self.settings.height // 10
+        self.board_width = self.settings.width // 10
+        self.board_height = self.settings.height // 5
+
+        self.board_left = [int(self.settings.width * 0.12), int(self.settings.width * 0.28)]
+        self.board_right = [int(self.settings.width * 0.62), int(self.settings.width * 0.78)]
+
+        self.num_left = []
+        self.num_right = []
+
+        if self.position:
+            for board_start in self.board_left:
+                board = pygame.Rect(board_start, self.board_top, self.board_width, self.board_height)
+                num = [
+                        [board.topleft, board.topright, board.bottomright, board.bottomleft, board.topleft],
+                        [board.midtop, board.midbottom],
+                        [board.topleft, board.topright, board.midright, board.midleft, board.bottomleft, board.bottomright],
+                        [board.topleft, board.topright, board.midright, board.midleft, board.midright, board.bottomright, board.bottomleft],
+                        [board.topleft, board.midleft, board.midright, board.topright, board.bottomright],
+                        [board.topright, board.topleft, board.midleft, board.midright, board.bottomright, board.bottomleft],
+                        [board.topright, board.topleft, board.bottomleft, board.bottomright, board.midright, board.midleft],
+                        [board.topleft, board.topright, board.bottomright],
+                        [board.topleft, board.topright, board.bottomright, board.bottomleft, board.topleft, board.midleft, board.midright],
+                        [board.bottomleft, board.bottomright, board.topright, board.topleft, board.midleft, board.midright]
+                        ]
+                self.num_left.append(num)
+        else:
+            boards = self.board_right
+            for board_start in boards:
+                board = pygame.Rect(board_start, self.board_top, self.board_width, self.board_height)
+                num = [
+                        [board.topleft, board.topright, board.bottomright, board.bottomleft, board.topleft],
+                        [board.midtop, board.midbottom],
+                        [board.topleft, board.topright, board.midright, board.midleft, board.bottomleft, board.bottomright],
+                        [board.topleft, board.topright, board.midright, board.midleft, board.midright, board.bottomright, board.bottomleft],
+                        [board.topleft, board.midleft, board.midright, board.topright, board.bottomright],
+                        [board.topright, board.topleft, board.midleft, board.midright, board.bottomright, board.bottomleft],
+                        [board.topright, board.topleft, board.bottomleft, board.bottomright, board.midright, board.midleft],
+                        [board.topleft, board.topright, board.bottomright],
+                        [board.topleft, board.topright, board.bottomright, board.bottomleft, board.topleft, board.midleft, board.midright],
+                        [board.bottomleft, board.bottomright, board.topright, board.topleft, board.midleft, board.midright]
+                        ]
+                self.num_right.append(num)
+
+    def score(self):
+        if self.ball.out_left:
+            self.score_p2 += 1
+        elif self.ball.out_right:
+            self.score_p1 += 1
+
+        return self.score_p1, self.score_p2
+
+
+if __name__ == "__main__":
+    from options import Configuration
+    confy = Configuration()
+    val = 23
+    for i in range(2):
+        numbers = Score(confy, Ball(confy), True).num_left
+        if i == 0:
+            print(numbers[i][val % 10])
+        if i == 1:
+            print(numbers[i][val // 10])
+
