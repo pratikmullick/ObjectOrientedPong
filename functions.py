@@ -1,4 +1,8 @@
-import os, sys
+"""
+Primary game functions regarding inputs, collision and AI.
+"""
+
+import sys
 import pygame
 import objects
 
@@ -6,7 +10,7 @@ class Opening:
     """
     Functions for moving the cursor on the opening screen.
     """
-    
+
     def __init__(self, settings):
         pygame.init()
         self.settings = settings
@@ -17,6 +21,7 @@ class Opening:
         self.up = 0
 
     def check_event(self):
+        # Input events for cursor movement
         for event in pygame.event.get():
 
             # For exiting out of the game.
@@ -48,20 +53,20 @@ class Game:
         self.paddle_2 = paddle_2
         self.ball = ball
         self.player = player
-        
+
         self.speed = 5
         self.p1_up = False
         self.p1_down = False
         self.p2_up = False
         self.p2_down = False
-    
+
     def check_event(self):
         for event in pygame.event.get():
             # For exiting out of the game
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-                
+
             # Checking up and down movements from p1
             if event.type == pygame.KEYDOWN:
                 if event.key == self.settings.p1_up:
@@ -75,7 +80,7 @@ class Game:
             elif event.type == pygame.KEYUP:
                 if event.key == self.settings.p1_down:
                     self.p1_down = False
-                    
+
             # Checking up and down movements from p2
             if event.type == pygame.KEYDOWN:
                 if event.key == self.settings.p2_up:
@@ -91,6 +96,7 @@ class Game:
                     self.p2_down = False
 
     def paddle_movement(self):
+        # Moves the paddle up or down.
         if self.player == 1:
             if self.p1_up:
                 self.paddle_1.hitter.centery -= self.speed
@@ -109,16 +115,13 @@ class Game:
         self.paddle_2.limits()
 
     def collision(self):
+        # Checks for collision of the ball and the paddles
         if pygame.Rect.colliderect(self.ball.square, self.paddle_1.hitter):
             self.ball.dir_x = -self.ball.dir_x
         elif pygame.Rect.colliderect(self.ball.square, self.paddle_2.hitter):
             self.ball.dir_x = -self.ball.dir_x
-            
+
     def artificial_intelligence(self):
-        """
-        More work needed here!
-        """
+        # More work needed here!
         if self.player == 1:
             self.paddle_2.hitter.centery = self.ball.square.centery
-
-    

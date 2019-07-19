@@ -31,7 +31,7 @@ class Configuration:
             self.p2_up = int(self.keymaps[self.conparser['KEY']['P2_UP']])
             self.p2_down = int(self.keymaps[self.conparser['KEY']['P2_DOWN']])
             self.max_score = int(self.conparser['SCORE']['MAX'])
-            
+
             if self.max_score > 99:
                 self.max_score = 99
 
