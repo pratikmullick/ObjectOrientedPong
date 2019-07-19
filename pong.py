@@ -1,4 +1,6 @@
-# Coding: ASCII
+#!/usr/bin/env python
+
+# Coding: UTF-8
 # Object Oriented Pong - A Classic Atari Pong Clone
 # Copyright (C) 2018  Pratik Mullick
 
@@ -54,7 +56,7 @@ class OpeningScreen:
 
     def draw_objects(self):
         text_init = self.select.position
-        self.surface.fill(self.confy.black)
+        self.surface.fill(self.confy.navy)
 
         # Draw Logo
         for letter in objects.Logo(self.confy).logo:
@@ -65,7 +67,8 @@ class OpeningScreen:
             self.select.font.render_to(self.surface, (self.select.starting, text_init), msg, fgcolor=self.confy.white)
             text_init += self.select.gap
 
-        pygame.draw.rect(self.surface, self.confy.white, self.cursor)
+        # Draw Cursor
+        pygame.draw.rect(self.surface, self.confy.red, self.cursor)
 
     def check_cursor_state(self):
         # Checks if cursor is at p1 or p2 position.

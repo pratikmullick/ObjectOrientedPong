@@ -45,7 +45,7 @@ class Configuration:
             self.p1_down = int(self.keymaps['s'])
             self.p2_up = int(self.keymaps['UP'])
             self.p2_down = int(self.keymaps['DOWN'])
-            self.max_score = 99
+            self.max_score = 10
 
 
         # Static Options
